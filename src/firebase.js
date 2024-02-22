@@ -1,5 +1,10 @@
-import * as firebase from "firebase";
 import { initializeApp } from "firebase/app";
+// import * as firebase from "firebase";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  sendSignInLinkToEmail,
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBeT559v1oZckgYadVBaSjDT2f6sVj9zJY",
@@ -13,7 +18,11 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// export
+// Export Auth and GoogleAuthProvider
+export const auth = getAuth(app);
+export const googleAuthProvider = new GoogleAuthProvider();
 
-export const auth = firebase.auth();
-export const googleAuthProvider = firebase.auth.googleAuthProvider();
+// Export sendSignInLinkToEmail function
+export const sendSignInLinkToUser = (email, actionCodeSettings) => {
+  return sendSignInLinkToEmail(auth, email, actionCodeSettings);
+};
