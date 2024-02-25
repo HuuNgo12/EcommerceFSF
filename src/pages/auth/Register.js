@@ -41,6 +41,7 @@ const Register = () => {
         autoFocus
         placeholder="Enter your email"
       />
+      <br />
       <button type="submit" className="btn btn-primary mt-3">
         Register
       </button>

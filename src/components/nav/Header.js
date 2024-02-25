@@ -12,6 +12,7 @@ import {
   SettingOutlined,
   UserAddOutlined,
   UserOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -33,7 +34,7 @@ const Header = () => {
       .then(() => {
         // Sign-out successful.
         dispatch({
-          type: "LOGOUT",
+          type: "LOGGOUT",
           payload: null,
         });
         navigate("/");
@@ -67,7 +68,7 @@ const Header = () => {
         <Menu.Item key="setting:2">
           <Link to="/setting/2">Option 2</Link>
         </Menu.Item>
-        <Menu.Item key="logout" icon={<UserOutlined />} onClick={logout}>
+        <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={logout}>
           <Link to="/setting/2">Log out</Link>
         </Menu.Item>
       </SubMenu>
