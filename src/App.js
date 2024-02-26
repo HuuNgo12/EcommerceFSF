@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Header from "./components/nav/Header";
 import Register from "./pages/auth/Register";
 import RegisterComplete from "./pages/auth/RegisterComplete";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 
 import "antd/dist/antd";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -24,7 +25,7 @@ const App = () => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         const idTokenResult = await user.getIdTokenResult();
-        console.log("user", user);
+        // console.log("user", user);
         dispatch({
           type: "LOGGED_IN_USER",
           payload: {
@@ -48,6 +49,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/register/complete" element={<RegisterComplete />} />
+        <Route path="/forgot/password" element={<ForgotPassword />} />
       </Routes>
     </>
   );

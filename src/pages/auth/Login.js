@@ -1,10 +1,10 @@
 // export default Register;
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
 
 import { googleAuthProvider } from "../../firebase.js";
 
@@ -15,12 +15,22 @@ import { auth } from "../../firebase.js";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import "firebase/auth";
 
+import styled from "styled-components";
+
 const Login = () => {
   const [email, setEmail] = useState("ngovanhuu1602@gmail.com");
-  const [password, setPassword] = useState("111111");
+  const [password, setPassword] = useState("123456");
   const [loading, setLoading] = useState(false);
+  const [login, setLogin] = useState(false);
   let dispatch = useDispatch();
   let navigate = useNavigate();
+
+  const { user } = useSelector((state) => ({ ...state }));
+  useEffect(() => {
+    if (user && user.token) {
+      navigate("/");
+    }
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +41,8 @@ const Login = () => {
       const result = await signInWithEmailAndPassword(auth, email, password);
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
+      console.log(`login ? ${login} `);
+
       dispatch({
         type: "LOGGED_IN_USER",
         payload: {
@@ -52,6 +64,8 @@ const Login = () => {
       const result = await signInWithPopup(auth, googleAuthProvider);
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
+      console.log(`login ? ${login} `);
+
       dispatch({
         type: "LOGGED_IN_USER",
         payload: {
@@ -106,32 +120,45 @@ const Login = () => {
   );
 
   return (
-    <div className="container p-5">
-      <div className="row">
-        <div className="col-md-6 offset-md-3">
-          {!loading ? (
-            <h4>Login</h4>
-          ) : (
-            <h4 className="text-danger">Loading ...</h4>
-          )}
-          {loginForm()}
+    <Wrapper>
+      <div className="container p-5">
+        <div className="row">
+          <div className="col-md-6 offset-md-3">
+            {!loading ? (
+              <h4>Login</h4>
+            ) : (
+              <h4 className="text-danger">Loading ...</h4>
+            )}
+            {loginForm()}
 
-          <Button
-            onClick={googleLogin}
-            type="primary"
-            className="mt-3 "
-            block
-            shape="round"
-            icon={<GoogleOutlined />}
-            size="large"
-            danger
-          >
-            Login with Google
-          </Button>
+            <Button
+              onClick={googleLogin}
+              type="primary"
+              className="mt-3 "
+              block
+              shape="round"
+              icon={<GoogleOutlined />}
+              size="large"
+              danger
+            >
+              Login with Google
+            </Button>
+            <div className="text-right">
+              <Link to="/forgot/password" className="text-danger">
+                Forgot password
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.article`
+  .text-right {
+    text-align: right;
+  }
+`;
 
 export default Login;

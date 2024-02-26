@@ -3,7 +3,7 @@ import userReducer from "./userReducer";
 import { configureStore } from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
-  user: userReducer,
+  user: userReducer, // sau này có thể thêm products, ....
 });
 
 const store = configureStore({
