@@ -15,8 +15,24 @@ import { auth } from "../../firebase.js";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import "firebase/auth";
 
+import axios from "axios";
+
 import styled from "styled-components";
 
+//This is the code to post the token to the backend. 'authToken' comes from
+//Firebase when the user submits the login form (see it in the handleSubmit function of the login).
+const createOrUpdateUser = async (authToken) => {
+  return await axios.post(
+    `${process.env.REACT_APP_API}/create-or-update-user`,
+    {},
+    {
+      heasers: {
+        authToken,
+      },
+    }
+  );
+};
+//
 const Login = () => {
   const [email, setEmail] = useState("ngovanhuu1602@gmail.com");
   const [password, setPassword] = useState("123456");
@@ -41,15 +57,23 @@ const Login = () => {
       const result = await signInWithEmailAndPassword(auth, email, password);
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
-      console.log(`login ? ${login} `);
 
-      dispatch({
-        type: "LOGGED_IN_USER",
-        payload: {
-          email: user.email,
-          token: idTokenResult.token,
-        },
-      });
+      // console.log(`login ? ${login} `);
+      createOrUpdateUser(idTokenResult.token) // call the function to post the token to the backend. Because it is asyn function
+        // So, the result is a promise.
+        .then((res) => {
+          console.log("CREATE OR UPDATE RES", res);
+          console.log(idTokenResult.token);
+        })
+        .catch();
+
+      // dispatch({
+      //   type: "LOGGED_IN_USER",
+      //   payload: {
+      //     email: user.email,
+      //     token: idTokenResult.token,
+      //   },
+      // });
 
       navigate("/");
     } catch (error) {
