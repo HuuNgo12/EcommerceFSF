@@ -9,11 +9,16 @@ import { auth } from "../../firebase.js";
 import { signInWithEmailLink } from "firebase/auth";
 import { updatePassword } from "firebase/auth";
 
+import { useDispatch, useSelector } from "react-redux";
+
+import { createOrUpdateUser } from "../../functions/auth";
+
 const RegisterComplete = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   let navigate = useNavigate();
+  let dispatch = useDispatch();
 
   useEffect(() => {
     setEmail(window.localStorage.getItem("emailForRegistration"));
@@ -49,6 +54,21 @@ const RegisterComplete = () => {
         const idTokenResult = await user.getIdTokenResult();
         console.log("user", user, "idToken", idTokenResult);
         // redux store
+        createOrUpdateUser(idTokenResult.token) // call the function to post the token to the backend. Because it is asyn function
+          // So, the result is a promise.
+          .then((res) => {
+            dispatch({
+              type: "LOGGED_IN_USER",
+              payload: {
+                name: res.data.name, //from server
+                email: res.data.email, //from server
+                token: idTokenResult.token, // from client
+                role: res.data.role,
+                _id: res.data._id,
+              },
+            });
+          })
+          .catch();
         //redirect
         navigate("/");
       }

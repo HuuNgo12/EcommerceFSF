@@ -15,27 +15,17 @@ import { auth } from "../../firebase.js";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import "firebase/auth";
 
-import axios from "axios";
-
 import styled from "styled-components";
+
+import { createOrUpdateUser } from "../../functions/auth";
 
 //This is the code to post the token to the backend. 'authToken' comes from
 //Firebase when the user submits the login form (see it in the handleSubmit function of the login).
-const createOrUpdateUser = async (authToken) => {
-  return await axios.post(
-    `${process.env.REACT_APP_API}/create-or-update-user`,
-    {},
-    {
-      heasers: {
-        authToken,
-      },
-    }
-  );
-};
+
 //
 const Login = () => {
   const [email, setEmail] = useState("ngovanhuu1602@gmail.com");
-  const [password, setPassword] = useState("123456");
+  const [password, setPassword] = useState("111111");
   const [loading, setLoading] = useState(false);
   const [login, setLogin] = useState(false);
   let dispatch = useDispatch();
@@ -62,19 +52,18 @@ const Login = () => {
       createOrUpdateUser(idTokenResult.token) // call the function to post the token to the backend. Because it is asyn function
         // So, the result is a promise.
         .then((res) => {
-          console.log("CREATE OR UPDATE RES", res);
-          console.log(idTokenResult.token);
+          dispatch({
+            type: "LOGGED_IN_USER",
+            payload: {
+              name: res.data.name, //from server
+              email: res.data.email, //from server
+              token: idTokenResult.token, // from client
+              role: res.data.role, //from server
+              _id: res.data._id, //from server
+            },
+          });
         })
         .catch();
-
-      // dispatch({
-      //   type: "LOGGED_IN_USER",
-      //   payload: {
-      //     email: user.email,
-      //     token: idTokenResult.token,
-      //   },
-      // });
-
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -90,14 +79,21 @@ const Login = () => {
       const idTokenResult = await user.getIdTokenResult();
       console.log(`login ? ${login} `);
 
-      dispatch({
-        type: "LOGGED_IN_USER",
-        payload: {
-          email: user.email,
-          token: idTokenResult.token,
-        },
-      });
-
+      createOrUpdateUser(idTokenResult.token) // call the function to post the token to the backend. Because it is asyn function
+        // So, the result is a promise.
+        .then((res) => {
+          dispatch({
+            type: "LOGGED_IN_USER",
+            payload: {
+              name: res.data.name, //from server
+              email: res.data.email, //from server
+              token: idTokenResult.token, // from client
+              role: res.data.role,
+              _id: res.data._id,
+            },
+          });
+        })
+        .catch();
       navigate("/");
     } catch (error) {
       console.log(error);
