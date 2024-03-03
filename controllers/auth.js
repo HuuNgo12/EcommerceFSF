@@ -26,3 +26,18 @@ exports.createOrUpdateUser = async (req, res) => {
   }
   // vòng If này là check nếu user đã tồn tại thì res, còn nếu chưa tồn tại thì tạo mới 1 user với email, name, picture
 };
+
+exports.currentUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.user.email }).exec();
+    if (!user) {
+      // Nếu không tìm thấy user, trả về lỗi 404 - Not Found
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json(user);
+  } catch (err) {
+    // Xử lý lỗi nếu có
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
