@@ -31,7 +31,16 @@ const Login = () => {
   let dispatch = useDispatch();
   let navigate = useNavigate();
 
+  const roleBasedRedirect = (res) => {
+    if (res.data.role === "admin") {
+      navigate("/admin/dashboard");
+    } else {
+      navigate("/user/history");
+    }
+  };
+
   const { user } = useSelector((state) => ({ ...state }));
+  // console.log(user);
   useEffect(() => {
     if (user && user.token) {
       navigate("/");
@@ -47,8 +56,6 @@ const Login = () => {
       const result = await signInWithEmailAndPassword(auth, email, password);
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
-
-      // console.log(`login ? ${login} `);
       createOrUpdateUser(idTokenResult.token) // call the function to post the token to the backend. Because it is asyn function
         // So, the result is a promise.
         .then((res) => {
@@ -62,8 +69,9 @@ const Login = () => {
               _id: res.data._id, //from server
             },
           });
+          roleBasedRedirect(res);
         })
-        .catch();
+        .catch((err) => console.log(err));
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -92,8 +100,9 @@ const Login = () => {
               _id: res.data._id,
             },
           });
+          roleBasedRedirect(res);
         })
-        .catch();
+        .catch((err) => console.log(err));
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -147,7 +156,7 @@ const Login = () => {
             {!loading ? (
               <h4>Login</h4>
             ) : (
-              <h4 className="text-danger">Loading ...</h4>
+              <h4 className="text-danger">Loading...</h4>
             )}
             {loginForm()}
 
