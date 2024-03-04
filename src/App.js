@@ -12,8 +12,10 @@ import RegisterComplete from "./pages/auth/RegisterComplete";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import History from "./pages/user/History";
 import UserRoute from "./components/routes/UserRoute";
+import AdminRoute from "./components/routes/AdminRoute";
 import Password from "./pages/user/Password";
 import Wishlist from "./pages/user/Wishlist";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 import "antd/dist/antd";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -25,7 +27,7 @@ import { currentUser } from "./functions/auth";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => ({ ...state }));
+  const user = useSelector((state) => state.user);
   // console.log(user);
 
   //to check firebase auth state
@@ -75,6 +77,10 @@ const App = () => {
         <Route
           path="/user/wishlist"
           element={<UserRoute Component={Wishlist} />}
+        />
+        <Route
+          path="/admin/dashboard"
+          element={<AdminRoute Component={AdminDashboard} />}
         />
       </Routes>
     </>

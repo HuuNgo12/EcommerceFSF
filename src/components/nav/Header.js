@@ -25,7 +25,7 @@ const Header = () => {
   const [current, setCurrent] = useState("");
   let dispatch = useDispatch();
   let navigate = useNavigate();
-  let { user } = useSelector((state) => ({ ...state }));
+  let user = useSelector((state) => state.user);
 
   const handleClick = (e) => {
     setCurrent(e.key);

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import LoadingToRedrect from "./LoadingToRedrect";
 
 const UserRoute = ({ Component }) => {
-  const { user } = useSelector((state) => state);
+  const user = useSelector((state) => state.user);
   return user && user.token ? <Component /> : <LoadingToRedrect />;
 };
 
