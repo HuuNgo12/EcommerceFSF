@@ -16,6 +16,8 @@ import AdminRoute from "./components/routes/AdminRoute";
 import Password from "./pages/user/Password";
 import Wishlist from "./pages/user/Wishlist";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import CategoryCreate from "./pages/admin/category/CategoryCreate";
+import CategoryUpdate from "./pages/admin/category/CategoryUpdate";
 
 import "antd/dist/antd";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -81,6 +83,14 @@ const App = () => {
         <Route
           path="/admin/dashboard"
           element={<AdminRoute Component={AdminDashboard} />}
+        />
+        <Route
+          path="/admin/category"
+          element={<AdminRoute Component={CategoryCreate} />}
+        />
+        <Route
+          path="/admin/category/:slug"
+          element={<AdminRoute Component={CategoryUpdate} />}
         />
       </Routes>
     </>

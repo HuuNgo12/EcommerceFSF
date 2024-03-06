@@ -11,7 +11,7 @@ const AdminRoute = ({ Component }) => {
     if (user && user.token) {
       currentAdmin(user.token)
         .then((res) => {
-          console.log("Current admin", res);
+          // console.log("Current admin", res);
           setOke(true);
         })
         .catch((err) => {
