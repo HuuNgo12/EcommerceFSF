@@ -16,8 +16,8 @@ const {
 router.post("/category", authCheck, adminCheck, create);
 router.get("/categories", list);
 router.get("/category/:slug", read);
-router.put("/category/:slug", update);
-router.delete("/category/:slug", remove);
+router.put("/category/:slug", authCheck, adminCheck, update);
+router.delete("/category/:slug", authCheck, adminCheck, remove);
 
 // khi dòng code này chạy thì nó sẽ thực hiện tuần tự các function
 
