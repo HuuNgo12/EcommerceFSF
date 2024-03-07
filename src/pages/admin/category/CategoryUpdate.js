@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 import { getCategory, updateCategory } from "../../../functions/category";
+import CategoryForm from "../../../components/forms/CategoryForm";
 
 const CategoryUpdate = () => {
   const [name, setName] = useState("");
@@ -39,23 +40,6 @@ const CategoryUpdate = () => {
       });
   };
 
-  const categoryForm = () => (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label>Name</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="form-control"
-          autoFocus
-          required
-        />
-        <br />
-        <button className="btn btn-outline-primary">Save</button>
-      </div>
-    </form>
-  );
   return (
     <div className="container-fluid">
       <div className="row">
@@ -68,7 +52,13 @@ const CategoryUpdate = () => {
           ) : (
             <h4>Update category</h4>
           )}
-          {categoryForm()}
+          {
+            <CategoryForm
+              handleSubmit={handleSubmit}
+              name={name}
+              setName={setName}
+            />
+          }
           <hr />
         </div>
       </div>

@@ -8,17 +8,20 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 import {
   getCategories,
-  getCategory,
   removeCategory,
   createCategory,
 } from "../../../functions/category";
+import CategoryForm from "../../../components/forms/CategoryForm";
+import LocalSearch from "../../../components/forms/LocalSearch";
 
 const CategoryCreate = () => {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const user = useSelector((state) => state.user);
-
+  // step 1 - search
+  const [keyword, setKeyword] = useState("");
+  //
   const loadCategories = () =>
     getCategories().then((c) => {
       setCategories(c.data);
@@ -62,24 +65,11 @@ const CategoryCreate = () => {
         });
     }
   };
+  //step 3- search category
 
-  const categoryForm = () => (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label>Name</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="form-control"
-          autoFocus
-          required
-        />
-        <br />
-        <button className="btn btn-outline-primary">Save</button>
-      </div>
-    </form>
-  );
+  //step 4-
+  const searched = (keyword) => (c) => c.name.toLowerCase().includes(keyword);
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -92,9 +82,22 @@ const CategoryCreate = () => {
           ) : (
             <h4>Create category</h4>
           )}
-          {categoryForm()}
+          {
+            <CategoryForm
+              handleSubmit={handleSubmit}
+              name={name}
+              setName={setName}
+            />
+          }
           <hr />
-          {categories.map((c) => (
+
+          {<LocalSearch keyword={keyword} setKeyword={setKeyword} />}
+
+          <hr />
+          {
+            //step 5
+          }
+          {categories.filter(searched(keyword)).map((c) => (
             <div className="alert alert-secondary" key={c._id}>
               {c.name}
               <span
