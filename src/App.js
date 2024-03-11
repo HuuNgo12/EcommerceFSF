@@ -20,6 +20,7 @@ import CategoryCreate from "./pages/admin/category/CategoryCreate";
 import CategoryUpdate from "./pages/admin/category/CategoryUpdate";
 import SubCreate from "./pages/admin/sub/SubCreate";
 import SubUpdate from "./pages/admin/sub/SubUpdate";
+import ProductCreate from "./pages/admin/product/ProductCreate";
 
 import "antd/dist/antd";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -101,6 +102,10 @@ const App = () => {
         <Route
           path="/admin/sub/:slug"
           element={<AdminRoute Component={SubUpdate} />}
+        />
+        <Route
+          path="/admin/product"
+          element={<AdminRoute Component={ProductCreate} />}
         />
       </Routes>
     </>
