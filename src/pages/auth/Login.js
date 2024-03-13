@@ -25,7 +25,7 @@ import { createOrUpdateUser } from "../../functions/auth";
 //
 const Login = () => {
   const [email, setEmail] = useState("ngovanhuu1602@gmail.com");
-  const [password, setPassword] = useState("111111");
+  const [password, setPassword] = useState("123456");
   const [loading, setLoading] = useState(false);
   const [login, setLogin] = useState(false);
   let dispatch = useDispatch();
@@ -51,7 +51,7 @@ const Login = () => {
     e.preventDefault();
     // console.table(email, password);
     setLoading(true);
-    console.log(loading);
+    // console.log(loading);
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       const { user } = result;

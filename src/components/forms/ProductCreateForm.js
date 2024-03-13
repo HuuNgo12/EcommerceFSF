@@ -1,6 +1,17 @@
 import React from "react";
+import { Select } from "antd";
 
-const ProductCreateForm = ({ handleSubmit, handleChange, values }) => {
+const { Option } = Select;
+
+const ProductCreateForm = ({
+  handleSubmit,
+  handleChange,
+  values,
+  handleCategoryChange,
+  subOptions,
+  showSubs,
+  setValues,
+}) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-group">
@@ -77,6 +88,42 @@ const ProductCreateForm = ({ handleSubmit, handleChange, values }) => {
           ))}
         </select>
       </div>
+      <div className="form-group">
+        <label>Category</label>
+        <select
+          name="category"
+          className="form-control"
+          onChange={handleCategoryChange}
+        >
+          <option>Please Select</option>
+          {values.categories.length > 0 &&
+            values.categories.map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.name}
+              </option>
+            ))}
+        </select>
+      </div>
+      {showSubs && (
+        <div>
+          <label>Sub Category</label>
+          <Select
+            mode="multiple"
+            style={{ width: "100%" }}
+            placeholder="Please select"
+            value={values.subs}
+            name="subs"
+            onChange={(value) => setValues({ ...values, subs: value })}
+          >
+            {subOptions.length &&
+              subOptions.map((s) => (
+                <Option key={s._id} value={s._id}>
+                  {s.name}
+                </Option>
+              ))}
+          </Select>
+        </div>
+      )}
       <hr />
       <button className="btn btn-primary">Save</button>
     </form>

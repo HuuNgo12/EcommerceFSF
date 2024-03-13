@@ -7,6 +7,7 @@ import AdminNav from "../../../components/nav/AdminNav";
 import { createProduct } from "../../../functions/product";
 import ProductCreateForm from "../../../components/forms/ProductCreateForm";
 
+import { getCategories, getCategorySubs } from "../../../functions/category";
 const initState = {
   title: "Acer Nitro 5",
   description: "This is the best Acer product",
@@ -25,7 +26,18 @@ const initState = {
 
 const ProductCreate = () => {
   const [values, setValues] = useState(initState);
+  const [subOptions, setSubOptions] = useState([]);
+  const [showSubs, setShowSubs] = useState(false);
   const user = useSelector((state) => state.user);
+  //category
+  const loadCategories = () =>
+    getCategories().then((c) => {
+      setValues({ ...values, categories: c.data });
+    });
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
   // console.log(user);
   const handleSubmit = (e) => {
     //
@@ -48,6 +60,16 @@ const ProductCreate = () => {
     setValues({ ...values, [e.target.name]: e.target.value });
     // console.log(e.target.name, "---------", e.target.value);
   };
+  const handleCategoryChange = (e) => {
+    e.preventDefault();
+    console.log("Category", e.target.value);
+    setValues({ ...values, subs: [], category: e.target.value });
+    getCategorySubs(e.target.value).then((res) => {
+      console.log(res);
+      setSubOptions(res.data);
+    });
+    setShowSubs(true);
+  };
   return (
     <div className="container-fluid">
       <div className="row">
@@ -61,6 +83,10 @@ const ProductCreate = () => {
             handleSubmit={handleSubmit}
             handleChange={handleChange}
             values={values}
+            setValues={setValues}
+            handleCategoryChange={handleCategoryChange}
+            subOptions={subOptions}
+            showSubs={showSubs}
           />
         </div>
       </div>
