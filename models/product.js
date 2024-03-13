@@ -7,13 +7,13 @@ const productSchema = new mongoose.Schema(
       type: String,
       trim: true,
       required: true,
-      maxlength: 32,
+      maxlength: 100,
       text: true,
     },
     slug: {
       type: String,
       unique: true,
-      lowercase: 32,
+      lowercase: 100,
       index: true,
     },
     description: {
@@ -29,14 +29,14 @@ const productSchema = new mongoose.Schema(
       required: true,
       maxlength: 32,
     },
-    // category: {
-    //   type: ObjectId,
-    //   ref: "Category",
-    // },
-    // subs: {
-    //   type: ObjectId,
-    //   ref: "Sub",
-    // },
+    category: {
+      type: ObjectId,
+      ref: "Category",
+    },
+    subs: {
+      type: ObjectId,
+      ref: "Sub",
+    },
     quantuty: {
       type: Number,
     },
