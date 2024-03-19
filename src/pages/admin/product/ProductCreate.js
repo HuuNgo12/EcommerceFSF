@@ -6,6 +6,8 @@ import AdminNav from "../../../components/nav/AdminNav";
 
 import { createProduct } from "../../../functions/product";
 import ProductCreateForm from "../../../components/forms/ProductCreateForm";
+import FileUpload from "../../../components/forms/FileUpload";
+import { LoadingOutlined } from "@ant-design/icons";
 
 import { getCategories, getCategorySubs } from "../../../functions/category";
 const initState = {
@@ -28,6 +30,8 @@ const ProductCreate = () => {
   const [values, setValues] = useState(initState);
   const [subOptions, setSubOptions] = useState([]);
   const [showSubs, setShowSubs] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const user = useSelector((state) => state.user);
   //category
   const loadCategories = () =>
@@ -77,8 +81,18 @@ const ProductCreate = () => {
           <AdminNav />
         </div>
         <div className="col-md-10">
-          <h4>Create Product</h4>
+          {loading ? (
+            <LoadingOutlined className="text-danger" />
+          ) : (
+            <h4>Create Product</h4>
+          )}
+          {JSON.stringify(values.images)}
           <hr />
+          <FileUpload
+            values={values}
+            setValues={setValues}
+            setLoading={setLoading}
+          />
           <ProductCreateForm
             handleSubmit={handleSubmit}
             handleChange={handleChange}
